@@ -1,86 +1,129 @@
 ﻿// See https://aka.ms/new-console-template for more informati
 
+
+
+//Ejercicio 8: Desafío de Clases y Métodos
+//Crea una clase Tienda que administre un inventario de productos. Define:
+
+//Una clase Producto con:
+
+//Nombre(string)
+//Precio(double)
+//Cantidad(int)
+//Una clase Tienda con:
+
+//Una lista de productos.
 //Métodos:
-//: Clase Calculadora
-//Crea una clase llamada Calculadora con:
-//Sumar(double a, double b) → Devuelve la suma de a y b.
-//Restar(double a, double b) → Devuelve la resta de a y b.
-//Multiplicar(double a, double b) → Devuelve el producto de a y b.
-//Dividir(double a, double b) → Devuelve la división de a entre b (verifica que no se divida entre 0).
+//AgregarProducto(Producto producto)
+//MostrarInventario() → Muestra los productos con su cantidad y precio.
+//VenderProducto(string nombre, int cantidad) → Reduce la cantidad del producto especificado (verifica que haya suficiente stock).
+//CalcularTotalInventario() → Devuelve el valor total de todos los productos.
 //En el método Main:
 
+//Crea una tienda.
+//Agrega productos.
+//Realiza ventas.
+//Muestra el inventario y el valor total después de cada operación.
 
-//El Get y Set es para probar su funcionalidad.
 
-class Calculadora
+class Producto
 {
-    private double primerValor;
-    private double segundoValor;
+    public string Nombre { get; set; }
+    public double Precio { get; set; }
+    public int Cantidad { get; set; }
 
-    public double PrimerValor
+    public Producto(string nombre, double precio, int cantidad) //Constructor
     {
-        get { return primerValor; }
-        set { primerValor = value; }
+        this.Nombre = nombre;
+        this.Precio = precio;
+        this.Cantidad = cantidad;
+    }
+}
+
+
+class Tienda
+{
+    private List<Producto> productos;
+
+    public Tienda()
+    {
+        productos = new List<Producto>();
+    }
+
+    public void AgregarProducto(string nombre, double precio, int cantidad)
+    {
+        Producto nuevoProducto = new Producto(nombre, precio, cantidad);
+
+        productos.Add(nuevoProducto);
     }
 
 
-    public double SegundoValor
+    public void MostrarProducto()
     {
-        get { return segundoValor; }
-        set { segundoValor = value; }
-    }
-
-    public Calculadora() : this(10, .3) { } // Constructor
-
-
-    public Calculadora(double primerValor, double segundoValor)
-    {
-        PrimerValor = primerValor;
-        SegundoValor = segundoValor;
-    }
-
-    ///Metodos
-    public double Suma()
-    {
-        return primerValor + segundoValor;
-    }
-
-
-    public double Resta()
-    {
-        return primerValor - segundoValor;
-    }
-
-
-    public double Producto()
-    {
-        return primerValor * segundoValor;
-    }
-
-
-    public double Division()
-    {
-        if (segundoValor != 0)
+        foreach (var producto in productos)
         {
-            return primerValor / segundoValor;
+            Console.WriteLine($"Nombre: {producto.Nombre}, Precio: {producto.Precio}, Cantidad: {producto.Cantidad}");
+        }
+    }
 
-        }
-        else
+
+    public void VenderProducto(string nombre, int cantidad)
+    {
+        foreach (var producto in productos)
         {
-            throw new DivideByZeroException("El divisor no puede ser cero.");
+
+            if (nombre == producto.Nombre && cantidad <= producto.Cantidad)
+            {
+
+                producto.Cantidad -= cantidad;
+                Console.WriteLine($"has comprado exitosamente {cantidad} {producto.Nombre} ");
+                Console.WriteLine($"stock disponible de ese producto {producto.Cantidad}");
+                break;
+
+            }
+            else if (nombre == producto.Nombre && cantidad < producto.Cantidad)
+            {
+                Console.WriteLine($"CANTIDAD no disponible de : {producto.Cantidad}");
+                break;
+            }
         }
+    }
+
+
+    public double ValorTotal()
+    {
+        double totalTienda = 0;
+
+        double precioProductoActual;
+
+        int cantidadProductoActual;
+
+        foreach (var producto in productos)
+        {
+            precioProductoActual = producto.Precio;
+
+            cantidadProductoActual = producto.Cantidad;
+
+            totalTienda = precioProductoActual * cantidadProductoActual;
+
+            break;
+        }
+
+        Console.WriteLine(totalTienda);
+
+        return totalTienda;
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            Calculadora myCalculadora = new Calculadora();
+            Tienda tiendaNueva = new Tienda();
 
-            Console.WriteLine(myCalculadora.Suma());
-            Console.WriteLine(myCalculadora.Resta());
-            Console.WriteLine(myCalculadora.Producto());
-            Console.WriteLine(myCalculadora.Division());
+            tiendaNueva.AgregarProducto("Taladro", 5, 200);
+            tiendaNueva.AgregarProducto("Taladro", 5, 200);
+
+            tiendaNueva.ValorTotal();
         }
     }
 }
