@@ -2,128 +2,74 @@
 
 
 
-//Ejercicio 8: Desafío de Clases y Métodos
-//Crea una clase Tienda que administre un inventario de productos. Define:
-
-//Una clase Producto con:
-
-//Nombre(string)
-//Precio(double)
-//Cantidad(int)
-//Una clase Tienda con:
-
-//Una lista de productos.
-//Métodos:
-//AgregarProducto(Producto producto)
-//MostrarInventario() → Muestra los productos con su cantidad y precio.
-//VenderProducto(string nombre, int cantidad) → Reduce la cantidad del producto especificado (verifica que haya suficiente stock).
-//CalcularTotalInventario() → Devuelve el valor total de todos los productos.
-//En el método Main:
-
-//Crea una tienda.
-//Agrega productos.
-//Realiza ventas.
-//Muestra el inventario y el valor total después de cada operación.
-
-
-class Producto
+class NumeroMayor
 {
-    public string Nombre { get; set; }
-    public double Precio { get; set; }
-    public int Cantidad { get; set; }
+    public int tamaño;
+    public int[] arrayNumeros;
 
-    public Producto(string nombre, double precio, int cantidad) //Constructor
+    public NumeroMayor(int tamaño)
     {
-        this.Nombre = nombre;
-        this.Precio = precio;
-        this.Cantidad = cantidad;
-    }
-}
-
-
-class Tienda
-{
-    private List<Producto> productos;
-
-    public Tienda()
-    {
-        productos = new List<Producto>();
+        this.tamaño = tamaño;
+        arrayNumeros = new int[tamaño];
     }
 
-    public void AgregarProducto(string nombre, double precio, int cantidad)
+    //Metodo para llenar el array con numeros 
+
+    public void AgregarNumeros ()
     {
-        Producto nuevoProducto = new Producto(nombre, precio, cantidad);
-
-        productos.Add(nuevoProducto);
-    }
-
-
-    public void MostrarProducto()
-    {
-        foreach (var producto in productos)
+        for(int i = 0; i < tamaño; i ++) // El bucle se ejecuta *tamaño* veces
         {
-            Console.WriteLine($"Nombre: {producto.Nombre}, Precio: {producto.Precio}, Cantidad: {producto.Cantidad}");
+            Console.Write($"Ingrese número {i + 1}: "); // En cada iteracion del bucle se muestra en consola el numero de la vuelta para ir pidiendo los datos ordenados
+
+            arrayNumeros[i] = Convert.ToInt32(Console.ReadLine()); // el numero en la posicion i == lo que se ingrese en la consola convertido con *convert.Toint*
+        }
+
+    }
+
+
+    //Metodo para mostrar todos los numeros ingresados
+
+    public void MostrarArray ()
+    {
+        for (int i = 0; i < arrayNumeros.Length; i++)
+        {
+            Console.WriteLine(arrayNumeros[i]); //En cada iteracion del bucle se van a mostrar los datos ingresados.
         }
     }
 
 
-    public void VenderProducto(string nombre, int cantidad)
-    {
-        foreach (var producto in productos)
-        {
 
-            if (nombre == producto.Nombre && cantidad <= producto.Cantidad)
+    //Metodo para encontrar el maximo numero
+
+    public int EncontrarNumeroMayor ()
+    {
+        int elementoMaximo = arrayNumeros[0]; // el numero 0 hace referencia a la posicion del primer elemento , se asume que el primer elemento es el mayor.
+
+        for(int i = 1; i < tamaño - 1; i ++)
+        {
+            if (arrayNumeros[i] > elementoMaximo)
             {
-
-                producto.Cantidad -= cantidad;
-                Console.WriteLine($"has comprado exitosamente {cantidad} {producto.Nombre} ");
-                Console.WriteLine($"stock disponible de ese producto {producto.Cantidad}");
-                break;
-
+                elementoMaximo = arrayNumeros[i];
             }
-            else if (nombre == producto.Nombre && cantidad < producto.Cantidad)
-            {
-                Console.WriteLine($"CANTIDAD no disponible de : {producto.Cantidad}");
-                break;
-            }
+
+            return elementoMaximo;
         }
     }
 
-
-    public double ValorTotal()
-    {
-        double totalTienda = 0;
-
-        double precioProductoActual;
-
-        int cantidadProductoActual;
-
-        foreach (var producto in productos)
-        {
-            precioProductoActual = producto.Precio;
-
-            cantidadProductoActual = producto.Cantidad;
-
-            totalTienda = precioProductoActual * cantidadProductoActual;
-
-            break;
-        }
-
-        Console.WriteLine(totalTienda);
-
-        return totalTienda;
-    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            Tienda tiendaNueva = new Tienda();
+            int tamaño = 10; // Definir el tamaño del arreglo
+            NumeroMayor numeroMayor = new NumeroMayor(tamaño); // Crear instancia
 
-            tiendaNueva.AgregarProducto("Taladro", 5, 200);
-            tiendaNueva.AgregarProducto("Taladro", 5, 200);
+            numeroMayor.AgregarNumeros(); // Llenar el arreglo
+            numeroMayor.MostrarArray(); // Imprimir el arreglo
 
-            tiendaNueva.ValorTotal();
+            //Mostrar el numero mas grande
+            int mayor = numeroMayor.EncontrarNumeroMayor();
+            Console.WriteLine($"El número más grande es: {mayor}");
         }
     }
 }
